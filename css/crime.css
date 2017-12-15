@@ -1,0 +1,104 @@
+.row {
+  margin: 0px!important;
+}
+body {
+  overflow-x: hidden;
+}
+td {
+  padding-right: 10px;
+}
+td {
+  padding-right: 10px;
+}
+#map {
+  height: 250px;
+  border: 1px solid #A6A6A6;
+  margin-top: 20px;
+  padding: 0px!important;
+}
+.header {
+  height: 100px;
+  margin-bottom: 20px;
+}
+.header i {
+  padding-top: 10px;
+}
+.header h1 {
+  display: inline;
+}
+.filters {
+  text-align: center;
+}
+.filters input[type="radio"] {
+  margin: 10px;
+}
+.coords input[type="text"] {
+  margin: 10px;
+}
+.results {
+  text-align: center;
+  border: solid 1px #A6A6A6;
+}
+.resultsheader {
+  text-align: center;
+}
+.noinfo {
+  text-align: center;
+}
+select {
+  height: 30px;
+  line-height: 20px;
+  padding-bottom: 3px;
+}
+input[type="submit"] {
+  background-color: #F8F8F8;
+  border: 1px solid #A6A6A6;
+  border-radius: 4px;
+  height: 30px;
+  padding-bottom: 3px;
+}
+input[type="text"] {
+  height: 30px;
+  border: 1px solid #A6A6A6;
+  border-radius: 4px;
+  line-height: 20px;
+  padding-bottom: 2px;
+  padding-left: 5px;
+}
+.tools {
+  text-align: center;
+  padding-bottom: 4px;
+}
+.toolwrap {
+  border: 1px solid #A6A6A6;
+  padding: 15px 0px 15px 0px;
+  min-height: 60px;
+  border-radius: 4px;
+}
+.filterwrap {
+  border: 1px solid #A6A6A6;
+  padding: 5px 0px 5px 0px;
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+td,
+th {
+  border: 1px solid #A6A6A6;
+  text-align: left;
+  padding: 8px;
+}
+tr:nth-child(even) {
+  background-color: #F8F8F8;
+}
+.scroller {
+  overflow-x: scroll;
+  height: 300px;
+  padding: 10px;
+}

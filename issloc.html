@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
+<link rel="stylesheet" href="css/issloc.css">   
+    
+</head>   
+<body>
+        
+<div  ng-app="myApp" ng-controller="myCtrl">
+    
+    <div class="row"> <!-- Open Row 1 : Header -->
+        <div class="col-sm-12">
+            <div class="head">
+                
+                <h1> <i class="fa fa-grav" aria-hidden="true"></i> International Space Station Spotter </h1>
+        
+            </div>
+        </div>
+    </div> <!-- Close Row 1 -->
+    
+    <div class="col-sm-12 toprow"> <!-- Top Section -->
+        
+           <div ng-hide="lat" class="loading">
+            <h1>Loading...</h1><i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+           
+            </div>    
+        
+            <div ng-show="lat" class="coords">
+             
+                 <div class="col-xs-12 col-md-6">
+
+                    <div class="box">
+                        <H1><i class="fa fa-globe" aria-hidden="true"></i> Your Latitude is <input ng-model="lat"></H1> 
+                     </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="box">
+                        <H1> <i class="fa fa-globe" aria-hidden="true"></i> Your Longitude is <input ng-model="lon"></H1>
+                    </div>    
+          
+                </div>
+      
+                <div class="col-xs-12" id="map"></div>
+            </div>  
+            <button class="coords" ng-show="lat" ng-click="getrequest()">Change Co-ords</button>
+        
+    </div> <!-- Close Top Section -->
+    
+    <div class="col-sm-12"> <!-- Results Section -->
+        
+        <div ng-show="datesarray" class="coords box">
+            
+            <p>The Co-ordinates above are derived from your current location. To change them simply enter new co-ordinates and click the button!</p>
+            <h2>The ISS Will Make {{passes}} Passes Over Your Location, At The Following Date and Times</h2>
+            <ul >
+                <li ng-repeat="x in datesarray" ng-show="lat" >{{x}}</li>
+            </ul>
+        
+        </div>
+        
+    </div> <!-- Close Results -->
+            
+</div> <!-- Close NG App -->
+   
+<script>
+    
+var app = angular.module('myApp', ['ngAnimate']).config(function($sceDelegateProvider) {
+    
+ $sceDelegateProvider.resourceUrlWhitelist([
+   // Allow same origin resource loads.
+   'self', 'localhost',
+   // Allow loading from our assets domain. 
+   'http://api.open-notify.org/**', 'https://maps.googleapis.com/maps/api/**', 'localhost']);
+ })    
+app.controller('myCtrl', function($scope, $sce, $http, $interval) { 
+    
+   // get the users location 
+    
+      if (navigator.geolocation) { //if browser supports HTML 5 geolocation API
+              navigator.geolocation.getCurrentPosition(function(position){ // get current location
+              $scope.$apply(function(){  
+              $scope.lat = position.coords.latitude; // assign latitude to variable scope.lat
+              $scope.lon = position.coords.longitude; // assign longitude to variable scope.lon
+              $scope.getrequest(); // call to ISS locator API
+                         
+      });
+    });
+  }
+    
+// create google map     
+    
+ var mapit = function () {
+     
+     $http.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyACaf2FYD7v1-nOB_KlEoR9ngJIg6xIbvQ').then(function(response){  // call to google maps 
+         
+          var uluru = {lat: $scope.lat, lng: $scope.lon}; // create co-ords variable from geolocation lat and lon
+          var map = new google.maps.Map(document.getElementById('map'), {
+            center: uluru,
+            scrollwheel: false,
+            zoom: 6
+          });
+         
+          var marker = new google.maps.Marker({ // place marker at the geolocation co-ords 
+            position: uluru,
+            map: map
+          });
+                
+    }); 
+}
+    
+ // locate ISS 
+ 
+ $scope.getrequest = function () { //call to ISS locator API 
+     
+       mapit(); // call google maps API 
+
+       var data = {
+            'lon' : $scope.lon,
+            'lat' : $scope.lat
+        };
+       $http.post('https://thisprojects.co.uk/proxy.php', data).then(function(response){  // call to local PHP script
+   
+           var dates = response.data.response; // cache date / times results from API
+           $scope.passes = response.data.request.passes; 
+           $scope.datesarray = []; // create datesarray
+  
+           for (i=0; i < dates.length; i++){ //loop through the cached API response
+       
+               var timeConvert = dates[i].risetime; //cache current iteration of ISS risetime in var called timeConvert
+               $scope.datesarray.push(convert(timeConvert)); //pass timeConvert over to time / date converter and push converted results to datesarray
+       
+           }
+                    
+       });
+     
+    convert = function (d) { // this function converts unix time stamp to something that makes sense 
+    
+        var n = new Date(d*1000); 
+        return n.toDateString() + " at " + n.toLocaleTimeString(); // hopefully , as the date given by API is in unix time , the local time method should get the correct time for the locale 
+     }
+
+ }
+ 
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
+<link rel="stylesheet" href="./css/compliance.css">    
+</head>       
+<body>
+      
+<div  ng-app="myApp" ng-controller="myCtrl">
+    
+    <div class="row"> <!-- Open Row 1 : Header -->
+        
+        <div class="col-md-12 box">
+            <h1><i class="fa fa-empire"></i></h1> 
+            <h2 class="comp">Compliance Now</h2>
+        </div>
+ 
+    </div> <!-- Close Row 1 -->
+       
+<div class="col-md-12 eggs items"> <!-- Sub Header Title Bar -->
+      <h3>DeathStar Service Mangement Dashboard</h3>
+</div> <!-- Close Header Bar -->
+   
+<div class="row"> <!-- Open Row 2: Surveillance Monitor -->
+       
+    <base-location></base-location>
+    
+</div> <!-- Close Row 2 -->
+    
+<div class="row"> <!-- Row 3 : Incident Table And Message System -->
+    
+    <div class="col-md-8">
+        
+        <div class="halfbox2">
+            
+        <incident></incident>
+    
+        <messenger></messenger>
+        
+        </div>
+        
+    </div>
+       
+    <div class="col-md-4">
+        
+       <watcher></watcher>
+    
+    </div>
+    
+</div> <!-- Close Row 3 -->
+    
+</div> <!-- Close NG-app -->
+
+<script>
+var app = angular.module('myApp', ['ngAnimate']);
+    
+        app.directive ("watcher", function(){
+                     
+            return {
+                
+                template: ' <div class="halfbox" >\
+                                <h3 >Rebel Operative Watch List</h3>\
+                                    <div class="watch">\
+                                            <form ng-repeat="x in peeps|limitTo:1" class="rebels">\
+                                                <h5> Name: </h5><input type="text" ng-model="x.name" readonly="1">\
+                                                <h5> Gender: </h5> <input type="text" ng-model="x.gender" readonly="1">\
+                                                <h5> Height: </h5><input type="text" ng-model="x.height" readonly="1">\
+                                                <h5> Eye Colour:</h5> <input type="text" ng-model="x.eye_color" readonly="1">\
+                                                <h5> Hair Colour: </h5><input type="text" ng-model="x.hair_color" readonly="1">\
+                                                <h5> DOB: </h5><input type="text" ng-model="x.birth_year" readonly="1">\
+                                            </form>\
+                                    </div>\
+                            </div>'
+            
+            
+                    };
+        });
+        app.directive("messenger", function() {
+            
+            return{
+                
+                template: ' <div ng-show="slidey && showit" class="messenger col-md-11 animate-show-hide">\
+                                <p ng-repeat="x in mess|limitTo:1" style="white-space: nowrap; margin-top:50px;">{{x}}</p> </div>\
+                                    <div ng-click="slidey =!slidey " class="messengertab col-md-1">\
+                                        <i ng-click="clickit()" ng-if="showit" class="message fa fa-envelope-o" ></i> \
+                                        </div>',
+                
+                link: function ($scope,element,attrs,$interval){
+                $scope.slidey = false; // part of the message slider mechanism 
+                $scope.showit = false; // shows the envelope icon 
+                
+                 $scope.clickit = function() { // expands the messenger 
+               
+                    var resize = angular.element( document.querySelector( '.messengertab' ) ); // Jquery lite select class .messengertab
+
+                        if ($scope.slidey == true ){ // only do this bit if the interval has set slidey to true IE - a message has arrived
+                            $scope.showit = false; // hide the envelope icon 
+                     
+                            resize.css('width','1%'); // shrink the message tab 
+                            resize.css('transition','all 1s'); // add transition 
+                         }
+        
+                    }
+            // create messages array 
+                $scope.mess=['<From:> Officer Cane :> Bring and buy cake sale - attendance mandatory' ,'<From:> Grnd Moff Tarkin :> Has Anyone Seen My Slippers?' ,'<From:> Recreation :> Sabacc Night! Wednesdays 21:00', '<From:> Admin Team Resource :> Meeting 11/15/2530 Cancelled','<From:> HR :> Auto Enrolment into Pension Scheme',
+                      '<From:> FN246 :> Storm Trooper Recruits Over Using Helmet Polisher'];
+
+             
+                  $scope.pushIt($scope.mess, 15000); // call animation function with messages array and delay in MS 
+                
+            }
+            
+            };
+            
+        });
+    
+         app.directive("incident", function() {
+                return{
+                  template: '           <div class="incidenttxt">\
+                                        <h3>Incident Records</h3>\
+                                        </div>\
+                                        <div class="incident">\
+                                                <table>\
+                                                    <col width="50%">\
+                                                    <col width="25%>\
+                                                    <col width="25%>\
+                                                  <tr>\
+                                                    <th>Description</th>\
+                                                    <th>User</th>\
+                                                    <th>Location</th>\
+                                                  </tr>\
+                                                  <tr ng-repeat="x in incidents|limitTo:7">\
+                                                    <td >{{x.description}}</td>\
+                                                    <td >{{x.user}}</td>\
+                                                    <td >{{x.location}}</td>\
+                                                  </tr>\
+                                                </table>\
+                                        </div>' , 
+               
+                  link: function ($scope,element,attrs){
+        
+        $scope.incidents = [ // setup the incident record array
+                    
+                        {description: "Database Access Needed", location: "Archives 4", user: "J Sward"},
+                        {description: "Powercycle Fail - Trash compactor", location: "Detention 4A", user: "XP426"},
+                        {description: "Choking Incident", location: "Command Deck", user: "Duty Deck Officer"},
+                        {description: "EPOS Down In Canteen", location: "Canteen", user: "Mr Stevens"},
+                        {description: "Tie Figther Malfunction", location: "Hanger Bay 2", user: "ZX201"},
+                        {description: "Mouse Droid Purchase Order", location: "Purchasing", user: "Mick Mauser"},
+                        {description: "Accidental Weapons Discharge", location: "Armoury", user: "PP218"},
+                        {description: "Environmental Control Issue", location: "Floor 23", user: "XX317"},
+                        {description: "Toilet Blocked", location: "Executive Suite", user: "Grnd Moff Tarkin"},
+                        {description: "Tractor Beam Maintenance", location: "Hanger Bay 6", user: "HG311"},
+                        {description: "Droid Malfunction", location: "Maintenance Bay", user: "XP258"},
+                        {description: "Inventory - Thermal Detonators", location: "Armoury", user: "PP218"},
+                        {description: "Tray Dryer Broken", location: "Catering Deck", user: "Jeff Vaydar"},
+                        {description: "Space Stationary Delivery", location: "Storage", user: "LX124"}
+                      
+                        
+                    ];    
+             
+                  $scope.pushIt($scope.incidents, 3000); // call animation function with incidents array and delay in MS 
+             }
+            
+                };     
+         });
+    
+         app.directive("baseLocation", function() {
+    return {
+
+        template : '<div class="col-md-12 ticker animate">\
+                    <h3>Surveillance Monitor</h3>\
+                    <ul class="animate" ng-repeat="x in planets|limitTo:1">\
+                    <li>Planet: {{x.name}} </li>\
+                    <li>Climate: {{x.climate}}</li>\
+                    <li>Diameter: {{x.diameter}}</li>\
+                    <li>Population: {{x.population}}</li>\
+                    <li>Orbital Period: {{x.orbital_period}}</li>\
+                    <li>Rotation Period: {{x.rotation_period}}</li>\
+                    <li>Surface Water: {{x.surface_water}} </li> </ul> </div>',
+         
+    };
+});
+app.controller('myCtrl', function($scope, $http, $interval) { 
+  
+ 
+$http.get("https://swapi.co/api/planets/").then(function(response){ // http request to get planets array 
+            
+            $scope.planets = response.data.results; // cache response from planets api
+    
+            $scope.pushIt($scope.planets, 15000); // call animations function with planets array and delay time as args
+           
+        }); // close planets HTTP promise 
+    
+$http.get("https://swapi.co/api/people/").then(function(response){ // http request to get peeps array 
+            
+            $scope.peeps = response.data.results; // cache response from people api 
+          
+            $scope.peeps.splice(3,1); // remove darth vader - he cant be on rebel watch list
+    
+            $scope.pushIt($scope.peeps, 7000); // call animations function with peeps array and delay time as args
+           
+        }); // close peeps HTTP promise 
+    
+$scope.pushIt = function (someArray, time){ // facilitiates animations - Base Locations , Watch List, Incidents and messenger 
+    
+            $interval(function() { // sets up intervals for the animations 
+                
+                    if (someArray==$scope.mess ){ // if the array being passed in is the message array 
+                           
+                                   $scope.showit = true; // show the envelope icon on messenger tab 
+                                   var resize = angular.element( document.querySelector( '.messengertab' ) ); //jquery lite select .messengertab class
+                                   resize.css('width','8.33333333%'); // enlarge the messenger tab 
+                                   resize.css('transition', 'all 1s'); // make sure css transition occurs 
+                    }
+            
+                var thePush = someArray.shift(); // these 2 lines facilitate the animations by moving data from beginning to end of the array
+                someArray.push(thePush); 
+             
+            }, time); // time is the delay interval in MS 
+    
+}   // close pushIT function
+           
+}); // close controller 
+</script>
+
+</body>
+</html>
