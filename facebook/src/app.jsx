@@ -16,8 +16,8 @@ class App extends Component {
 constructor(props){
 
   super(props);
-  this.state = {loggedIn: false};
-    this.test = {first_name: "empty", secondName: "empty", picture: "empty"};
+  this.state = {loggedIn: false, picture: "./"};
+    this.test = "./";
 } // close constructor
 
 componentDidMount() {
@@ -52,7 +52,8 @@ componentDidMount() {
         <h1 className="App-title">Milk Club</h1>
         {this.state.loggedIn ? <button onClick={this._fbLogout.bind(this)}> Sign Out </button> : <button onClick={this._fbLogin.bind(this)}>Login With Facebook</button>}
         <div>
-        {this.state.loggedIn ? this._fbGetdata() : <p>Please Log In</p>}
+        {this.state.loggedIn ? <p>Logged in</p> : <p>Please Log In</p>}
+        <img src={this.state.picture}></img>
         </div>
         </div>
         </div>
@@ -87,7 +88,7 @@ else {
 }
 }.bind(this));
 
-
+this._fbGetdata()
 
 } // end of fb login
 
@@ -108,13 +109,13 @@ window.FB.getLoginStatus(function(response) {
 
    const user = response.authResponse.userID;
    console.log(user);
-      window.FB.api(user, {fields:'first_name,last_name,picture'}, function(response) {
-        this.test = response;
+      window.FB.api(user, {fields:'first_name,last_name,picture,cover,currency,devices'}, function(response) {
+        this.test = response.picture.data.url;
 
-     console.log(this.test.first_name);
+        this.setState({picture: response.picture.data.url});
+     console.log(this.test);
 
-  }
-  );
+  }.bind(this));
 }.bind(this));
 
 
