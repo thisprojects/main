@@ -17,7 +17,7 @@ constructor(props){
 
   super(props);
   this.state = {loggedIn: false};
-    this.test = {first_name: "empty", secondName: "empty", picture: "empty"};
+  this.test = false;
 } // close constructor
 
 componentDidMount() {
@@ -109,9 +109,7 @@ window.FB.getLoginStatus(function(response) {
    const user = response.authResponse.userID;
    console.log(user);
       window.FB.api(user, {fields:'first_name,last_name,picture'}, function(response) {
-        this.test = response;
-
-     console.log(this.test.first_name);
+     console.log(response);
 
   }
   );

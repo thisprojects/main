@@ -3,21 +3,13 @@ import logo from './logo.svg';
 import './App.css';
 
 
-
-
-
-
-
-
-
-
 class App extends Component {
 
 constructor(props){
 
   super(props);
   this.state = {loggedIn: false};
-    this.test = {first_name: "empty", secondName: "empty", picture: "empty"};
+
 } // close constructor
 
 componentDidMount() {
@@ -53,11 +45,11 @@ componentDidMount() {
         {this.state.loggedIn ? <button onClick={this._fbLogout.bind(this)}> Sign Out </button> : <button onClick={this._fbLogin.bind(this)}>Login With Facebook</button>}
         <div>
         {this.state.loggedIn ? this._fbGetdata() : <p>Please Log In</p>}
-        </div>
+
         </div>
         </div>
 
-    ); // close return
+    ) // close return
   } // close render
 
 
@@ -68,7 +60,7 @@ _fbLogin () {
          if (response.status === 'connected') {
            console.log('Logged in.');
            this.setState({loggedIn: true});
-           this.test = true;
+
            console.log(this.state.loggedIn);
            console.log("this.test = " + this.test)
 }
@@ -77,7 +69,7 @@ else {
       if (response.authResponse) {
        console.log('Fetching information.... ');
        this.setState({loggedIn: true});
-       this.test = true;
+
        console.log("this.test = " + this.test)
       } else {
        console.log('User cancelled login or did not fully authorize.');
@@ -109,12 +101,9 @@ window.FB.getLoginStatus(function(response) {
    const user = response.authResponse.userID;
    console.log(user);
       window.FB.api(user, {fields:'first_name,last_name,picture'}, function(response) {
-        this.test = response;
 
-     console.log(this.test.first_name);
 
-  }
-  );
+  }.bind(this));
 }.bind(this));
 
 
