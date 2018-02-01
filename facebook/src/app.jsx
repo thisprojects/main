@@ -2,23 +2,12 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-class Events extends React.Component {
+class Interact extends React.Component {
 
         render() {
                     return (
-                              <div className="events">
-                                <p>Events</p>
-                              </div>
-                    )
-        }
-}
-
-class Comments extends React.Component {
-
-        render() {
-                    return (
-                              <div className="comments">
-                                <p>Comments</p>
+                              <div className="interact">
+                                <p>{this.props.componentName}</p>
                               </div>
                     )
         }
@@ -71,15 +60,18 @@ class App extends Component {
                               <div className="App">
                                   <div className="login">
                                         <h1 className="App-title">Milk Club</h1>
+
                                         {this.state.loggedIn ?
                                         <button onClick={this._fbLogout.bind(this)}> Sign Out </button> :
                                         <button onClick={this._fbLogin.bind(this)}>Login With Facebook</button>}
-                                            <div>
+
+                                        <div>
                                                 {this.state.loggedIn ? <p>Logged in</p> : <p>Please Log In</p>}
                                                 <Userdetails firstname={this.state.firstname} lastname={this.state.lastname} picture={this.state.picture} />
-                                                <Events />
-                                                <Comments />
-                                            </div>
+                                                <Interact componentName="Events" />
+                                                <Interact componentName="Comments" />
+
+                                        </div>
                                  </div>
                              </div>
 
