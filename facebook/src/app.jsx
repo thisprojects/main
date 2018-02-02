@@ -1,8 +1,23 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Fetch from 'react-fetch';
 
 class Interact extends React.Component {
+
+  constructor(props){
+                      super(props);
+                      this.state = {phpResponse: ""};
+  } // close constructor
+
+
+componentDidMount() {
+this._phpFetch();
+
+
+}
+
+
 
         render() {
                     return (
@@ -11,6 +26,23 @@ class Interact extends React.Component {
                               </div>
                     )
         }
+
+        _phpFetch (){
+
+
+
+          // fetch('http://localhost:8888/oldstuff/post.php').then(response => response.json()).then(data => this.setState({phpResponse: data}));
+
+          var x = "test";
+ fetch('http://localhost:8888/post.php', {
+   method: 'POST',
+   body: JSON.stringify({message: 'slub slub'})
+
+}).then (response => response.json()).then(data => console.log(data));
+
+
+        }
+
 }
 
 class Userdetails extends React.Component {
@@ -45,6 +77,7 @@ class App extends Component {
                                                                 });
 
                                                                 window.FB.AppEvents.logPageView();
+                                                                console.log("fbasync fired");
                             }; // close fbAsyncInit
 
                             (function(d, s, id){
@@ -53,6 +86,7 @@ class App extends Component {
                                                    js = d.createElement(s); js.id = id;
                                                    js.src = "https://connect.facebook.net/en_US/sdk.js";
                                                    fjs.parentNode.insertBefore(js, fjs);
+                                                   console.log("anon function FB fired");
                              }(document, 'script', 'facebook-jssdk'));
       } // close component did mount
         render() {
@@ -99,8 +133,9 @@ class App extends Component {
       } // end of fb login
 
       _fbIsLoggedin () {
-                          console.log(this.state.loggedIn);
+
                           this.setState({loggedIn: true});
+                          console.log("login state is " + this.state.loggedIn);
                           this._fbGetdata();
       } // end of isLoggedIn
 
