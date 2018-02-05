@@ -10,38 +10,16 @@ class Interact extends React.Component {
                       this.state = {phpResponse: ""};
   } // close constructor
 
-
-componentDidMount() {
-this._phpFetch();
-
-
-}
-
-
-
         render() {
                     return (
                               <div className="interact">
                                 <p>{this.props.componentName}</p>
+
                               </div>
                     )
         }
 
-        _phpFetch (){
 
-
-
-          // fetch('http://localhost:8888/oldstuff/post.php').then(response => response.json()).then(data => this.setState({phpResponse: data}));
-
-          var x = "test";
- fetch('http://localhost:8888/post.php', {
-   method: 'POST',
-   body: JSON.stringify({message: 'slub slub'})
-
-}).then (response => response.json()).then(data => console.log(data));
-
-
-        }
 
 }
 
@@ -55,8 +33,25 @@ class Userdetails extends React.Component {
                                     {this.props.firstname}
                                     <br />
                                     {this.props.lastname}
+                                    {this._phpFetch()}
                             </div>
                   )
+       }
+
+       _phpFetch (){
+
+
+
+         // fetch('http://localhost:8888/oldstuff/post.php').then(response => response.json()).then(data => this.setState({phpResponse: data}));
+
+         var x = "test";
+fetch('http://localhost:8888/post.php', {
+  method: 'POST',
+  body: JSON.stringify({firstname: this.props.firstname, lastname: this.props.lastname})
+
+}).then (response => response.json()).then(data => console.log(data));
+
+
        }
 }
 
