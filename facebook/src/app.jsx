@@ -33,7 +33,7 @@ class Userdetails extends React.Component {
                                     {this.props.firstname}
                                     <br />
                                     {this.props.lastname}
-                                    {this._phpFetch()}
+                                    {this.props.firstname ? this._phpFetch() : <p></p>}
                             </div>
                   )
        }
