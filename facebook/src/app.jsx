@@ -26,40 +26,33 @@ class Interact extends React.Component {
 class Userdetails extends React.Component {
 
         render () {
-                    return (
-                            <div className="userDetails">
-                                    {this.props.picture ? <img src={this.props.picture}></img> : <p></p>}
-                                    <br />
-                                    {this.props.firstname}
-                                    <br />
-                                    {this.props.lastname}
-                                    {this.props.firstname ? this._phpFetch() : <p></p>}
-                            </div>
-                  )
-       }
 
-       _phpFetch (){
+              if (this.props.firstname) {
+                return (
 
+                  <div className="userDetails">
+                          {this.props.picture ? <img src={this.props.picture}></img> : <p></p>}
+                          <br />
+                          <p>Welcome! {this.props.firstname + " " + this.props.lastname} </p>
 
+                  </div>
 
-         // fetch('http://localhost:8888/oldstuff/post.php').then(response => response.json()).then(data => this.setState({phpResponse: data}));
+                )
 
-         var x = "test";
-fetch('http://localhost:8888/post.php', {
-  method: 'POST',
-  body: JSON.stringify({firstname: this.props.firstname, lastname: this.props.lastname})
-
-}).then (response => response.json()).then(data => console.log(data));
-
+              }else { return (null)}
 
        }
+
+
 }
 
 class App extends Component {
 
       constructor(props){
                           super(props);
-                          this.state = {loggedIn: false, picture: "", firstname: "", lastname: ""};
+                          this.state = {loggedIn: false, user: {picture: "", firstname: "", lastname: "", id:""}, data: ""};
+
+
       } // close constructor
 
       componentDidMount() { // facebook SDK integration
@@ -85,6 +78,8 @@ class App extends Component {
                              }(document, 'script', 'facebook-jssdk'));
       } // close component did mount
         render() {
+
+          console.log(this.state.data.eventlist);
                     return (
                               <div className="App">
                                   <div className="login">
@@ -96,9 +91,9 @@ class App extends Component {
 
                                         <div>
                                                 {this.state.loggedIn ? <p>Logged in</p> : <p>Please Log In</p>}
-                                                <Userdetails firstname={this.state.firstname} lastname={this.state.lastname} picture={this.state.picture} />
-                                                <Interact componentName="Events" />
-                                                <Interact componentName="Comments" />
+                                                <Userdetails firstname={this.state.user.firstname} lastname={this.state.user.lastname} picture={this.state.user.picture} />
+                                                <Interact componentName="Events" eventlist={this.state.data}/>
+
 
                                         </div>
                                  </div>
@@ -132,6 +127,7 @@ class App extends Component {
                           this.setState({loggedIn: true});
                           console.log("login state is " + this.state.loggedIn);
                           this._fbGetdata();
+
       } // end of isLoggedIn
 
       _fbLogout() { // logs user out of app  - will also log out of facebook, providing they are not logged into facebook or another facebook app.
@@ -147,11 +143,23 @@ class App extends Component {
 
                                           window.FB.api(user, {fields:'first_name,last_name,picture'}, function(response) {
                                                     console.log(response);
-                                                    this.setState({picture: response.picture.data.url, firstname: response.first_name, lastname: response.last_name });
+                                                    this.setState({user: {firstname: response.first_name, lastname: response.last_name, id: response.id, picture: response.picture.data.url,}});
+                                                    this._phpFetch('http://localhost:8888/post.php', 'POST', this.state.user);
                                           }.bind(this));
                         }.bind(this));
+
+
       }// end of fb get data
 
-      } // close componenet
+     _phpFetch (url, method, body){
+       console.log(body);
+                  fetch(url, {
+                               method: method,
+                               body: JSON.stringify(body)
+
+                  }).then (response => response.json()).then(data => this.setState({data: data}));
+
+     }
+  } // close componenet
 
 export default App;
