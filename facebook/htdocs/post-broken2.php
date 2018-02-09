@@ -20,21 +20,34 @@ $dbname = "myDB";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
+function eventDB ($table, $where, $equals, $conn) { // takes in arguments + the mysqli object ($conn)
+
+$dbVar = "SELECT * FROM $table WHERE $where = '$equals'";
+$dbAction = $conn->query($dbVar);
+
+return $dbAction;
+
+}
 function eventDB2 ($table, $where, $equals, $conn) { // takes in arguments + the mysqli object ($conn)
 
-                  $x=[];
-                  $dbVar = "SELECT * FROM $table WHERE $where = '$equals'";
-                  $dbAction = $conn->query($dbVar);
+$x=[];
 
-                  if ($dbAction->num_rows > 0) {
-                      while($row = $dbAction->fetch_assoc()) {
-                          array_push($x, $row);
-                     }
-                      return $x;
+$dbVar = "SELECT * FROM $table WHERE $where = '$equals'";
+$dbAction = $conn->query($dbVar);
 
-                  }else{
-                      return "none";
-                  }
+if ($dbAction->num_rows > 0) {
+
+       while($row = $dbAction->fetch_assoc()) {
+       array_push($x, $row);
+      }
+      return $x;
+
+}else{
+        return "none";
+      }
+
+
+
 }
 
 class JASON {
@@ -46,15 +59,16 @@ class JASON {
       public $error = "";
       public $sublist = [];
       public $allevents = [];
-      public $test = [];
    }
 
    $e = new JASON();
+
+
+
 // Check connection
 if ($conn->connect_error) {
     $e->constatus = "connection failed";
 } else {
-
 $e->constatus = "connection succesful";
 
 $sql = "INSERT INTO users (firstname, lastname, idnumber)
@@ -69,17 +83,21 @@ if ($searchresult->num_rows > 0){
     $e->lastname = $request->lastname;
     $e->exists = "already exists";
     $yourEvents = eventDB2("events", "owner", $id, $conn); //"SELECT * FROM events WHERE owner = '$id'";
-    $e->eventlist = $yourEvents;
+
+           $e->eventlist = $yourEvents;
+
     $subbedEvents = eventDB2("subscriptions", "owner", $id, $conn); // Args being passed are equiv to "SELECT * FROM subscriptions WHERE owner ='$id'";
-    $a = $subbedEvents;
-            for ($i=0; $i < count($a); $i++){
-                  $stuff = $a[$i]['eventID'];
-                  $matchSubbed = eventDB2("events", "id", $stuff, $conn);
-                  array_push($e->sublist, $matchSubbed[0]);
-                }
 
-}else {
+        for ($i =0; $i < $subbedEvents; $i++){
 
+              $stuff = $subbedEvents['eventID'];
+              $matchSubbed = eventDB2("events", "id", $stuff, $conn);
+              array_push($e->sublist, $matchSubbed);
+
+
+        }
+
+}else{
 if ($conn->query($sql) === TRUE) {
     $e->exists = "Record Created";
 } else {

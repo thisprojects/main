@@ -20,22 +20,15 @@ $dbname = "myDB";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-function eventDB2 ($table, $where, $equals, $conn) { // takes in arguments + the mysqli object ($conn)
+function eventDB ($table, $where, $equals, $conn) { // takes in arguments + the mysqli object ($conn)
 
-                  $x=[];
-                  $dbVar = "SELECT * FROM $table WHERE $where = '$equals'";
-                  $dbAction = $conn->query($dbVar);
+$dbVar = "SELECT * FROM $table WHERE $where = '$equals'";
+$dbAction = $conn->query($dbVar);
 
-                  if ($dbAction->num_rows > 0) {
-                      while($row = $dbAction->fetch_assoc()) {
-                          array_push($x, $row);
-                     }
-                      return $x;
+return $dbAction;
 
-                  }else{
-                      return "none";
-                  }
 }
+
 
 class JASON {
       public $firstname = "";
@@ -46,10 +39,12 @@ class JASON {
       public $error = "";
       public $sublist = [];
       public $allevents = [];
-      public $test = [];
    }
 
    $e = new JASON();
+
+
+
 // Check connection
 if ($conn->connect_error) {
     $e->constatus = "connection failed";
@@ -68,15 +63,38 @@ if ($searchresult->num_rows > 0){
     $e->firstname = $firstname;
     $e->lastname = $request->lastname;
     $e->exists = "already exists";
-    $yourEvents = eventDB2("events", "owner", $id, $conn); //"SELECT * FROM events WHERE owner = '$id'";
-    $e->eventlist = $yourEvents;
-    $subbedEvents = eventDB2("subscriptions", "owner", $id, $conn); // Args being passed are equiv to "SELECT * FROM subscriptions WHERE owner ='$id'";
-    $a = $subbedEvents;
-            for ($i=0; $i < count($a); $i++){
-                  $stuff = $a[$i]['eventID'];
-                  $matchSubbed = eventDB2("events", "id", $stuff, $conn);
-                  array_push($e->sublist, $matchSubbed[0]);
-                }
+    $yourEvents = eventDB("events", "owner", $id, $conn); //"SELECT * FROM events WHERE owner = '$id'";
+    if ($yourEvents->num_rows > 0) {
+
+           while($row = $yourEvents->fetch_assoc()) {
+           array_push($e->eventlist, $row);
+
+          }
+
+    }else{
+            $e->eventslist = "no events";
+          }
+    $subbedEvents = eventDB("subscriptions", "owner", $id, $conn); // Args being passed are equiv to "SELECT * FROM subscriptions WHERE owner ='$id'";
+    if ($subbedEvents->num_rows > 0){
+
+      while($row = $subbedEvents->fetch_assoc()) {
+
+            $stuff = $row['eventID'];
+            $matchSubbed = eventDB("events", "id", $stuff, $conn);   // "SELECT * FROM events WHERE id ='$stuff'";
+
+            if ($matchSubbed->num_rows > 0){
+
+            $newrow = $matchSubbed->fetch_assoc();
+
+            array_push($e->sublist, $newrow);
+
+          }
+
+}
+
+    }else{
+      $e->sublist = "no subscriptions";
+    }
 
 }else {
 

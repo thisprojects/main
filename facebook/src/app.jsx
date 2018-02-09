@@ -5,18 +5,18 @@ import Fetch from 'react-fetch';
 
 class Interact extends React.Component {
 
-  constructor(props){
-                      super(props);
-                      this.state = {phpResponse: ""};
-  } // close constructor
 
         render() {
+
+            if (this.props.loggedIn){
+
                     return (
                               <div className="interact">
                                 <p>{this.props.componentName}</p>
-
+                                {this.props.eventlist}
                               </div>
                     )
+                  }else{ return(null)}
         }
 
 
@@ -33,7 +33,7 @@ class Userdetails extends React.Component {
                   <div className="userDetails">
                           {this.props.picture ? <img src={this.props.picture}></img> : <p></p>}
                           <br />
-                          <p>Welcome! {this.props.firstname + " " + this.props.lastname} </p>
+                          <p>Welcome {this.props.firstname + " " + this.props.lastname} !</p>
 
                   </div>
 
@@ -50,7 +50,7 @@ class App extends Component {
 
       constructor(props){
                           super(props);
-                          this.state = {loggedIn: false, user: {picture: "", firstname: "", lastname: "", id:""}, data: ""};
+                          this.state = {loggedIn: false, user: {picture: "", firstname: "", lastname: "", id:""}, data: {eventlist: "", sublist: ""}};
 
 
       } // close constructor
@@ -79,7 +79,7 @@ class App extends Component {
       } // close component did mount
         render() {
 
-          console.log(this.state.data.eventlist);
+          console.log(this.state.data);
                     return (
                               <div className="App">
                                   <div className="login">
@@ -92,7 +92,8 @@ class App extends Component {
                                         <div>
                                                 {this.state.loggedIn ? <p>Logged in</p> : <p>Please Log In</p>}
                                                 <Userdetails firstname={this.state.user.firstname} lastname={this.state.user.lastname} picture={this.state.user.picture} />
-                                                <Interact componentName="Events" eventlist={this.state.data}/>
+                                                <Interact loggedIn={this.state.loggedIn} componentName="Your Events" eventlist={this._arrayMap(this.state.data.eventlist)}/>
+                                                <Interact loggedIn={this.state.loggedIn} componentName="Subscribed Events" eventlist={this._arrayMap(this.state.data.sublist)}/>
 
 
                                         </div>
@@ -144,7 +145,7 @@ class App extends Component {
                                           window.FB.api(user, {fields:'first_name,last_name,picture'}, function(response) {
                                                     console.log(response);
                                                     this.setState({user: {firstname: response.first_name, lastname: response.last_name, id: response.id, picture: response.picture.data.url,}});
-                                                    this._phpFetch('http://localhost:8888/post.php', 'POST', this.state.user);
+                                                    this._phpFetch('http://localhost:80/post.php', 'POST', this.state.user);
                                           }.bind(this));
                         }.bind(this));
 
@@ -157,9 +158,50 @@ class App extends Component {
                                method: method,
                                body: JSON.stringify(body)
 
-                  }).then (response => response.json()).then(data => this.setState({data: data}));
+                  }).then (response => response.json()).then(data => this.setState({data: data})).catch(error => console.log(error));
 
      }
+
+     _arrayMap (input){      // array map method
+        console.log(input);
+         if (input){ // if the array argument is not empty
+
+             //let input = test; // cache passed argument as local variable
+             console.log("array map");
+             //console.log(input.toString());
+
+                 return (
+
+                     <div key={input.toString()}>
+
+                         {input.map (input  => // map the array and return the output items in HTML list
+
+                             <ul key={input.id.toString()}>
+                                 <li key={input.description.toString()}>Description {input.description}</li>
+                                 <li key={input.date.toString()}>Date {input.date}</li>
+                                 <li key={input.body.toString()}>Event Info {input.body}</li>
+                                 <li key={input.organiser.toString()}>Organiser {input.organiser}</li>
+                                 <li key={input.location.toString()}>Location {input.location}</li>
+                                 <li key={input.url.toString()}>URL {input.url}</li>
+                             </ul>
+
+                         )}
+
+                     </div>
+
+                 ) // close render
+
+         }else{ // if the array argument is empty
+
+             return ( // return a list containing the string "none"
+
+                 <ul>
+                 <li>None</li>
+                 </ul>
+             )
+         }   // close else
+
+     }   // close array map method
   } // close componenet
 
 export default App;
