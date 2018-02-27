@@ -20,17 +20,36 @@ $dbname = "myDB";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-function eventDB ($table, $where, $equals, $conn) { // takes in arguments + the mysqli object ($conn)
+function eventDB2 ($table, $where, $equals, $conn) { // takes in arguments + the mysqli object ($conn)
 
-$dbVar = "SELECT * FROM $table WHERE $where = '$equals'";
-$dbAction = $conn->query($dbVar);
+                  $x=[];  // creates empty return array
+                  $dbVar = "SELECT * FROM $table WHERE $where = '$equals'"; // creates variable with SQL query info from function args
+                  $dbAction = $conn->query($dbVar); // creates variable with mysqli method and above sql query variable
 
-return $dbAction;
+                  if ($dbAction->num_rows > 0) { // if there are any rows in the table queried
+                      while($row = $dbAction->fetch_assoc()) { // for each row push an entry into the array we created above
+                          array_push($x, $row);
+                     }
 
+                      return $x; // once all rows have been pushed to the array - return it
+
+                  }else{
+
+                      array_push($x, "none");
+                      return $x; // if there are no rows we push "none" into the array and return it
+                  }
 }
 
 
-class JASON {
+function crossRef () {
+
+
+
+
+
+}
+
+class JASON { // setup a class to handle our JSON info
       public $firstname = "";
       public $lastname  = "";
       public $constatus = "";
@@ -39,64 +58,39 @@ class JASON {
       public $error = "";
       public $sublist = [];
       public $allevents = [];
+      public $test = [];
    }
 
-   $e = new JASON();
-
-
-
+   $e = new JASON(); // create a new object from our JASON class
 // Check connection
-if ($conn->connect_error) {
+if ($conn->connect_error) { // if the DB returns an error when we try to connect
     $e->constatus = "connection failed";
-} else {
+
+} else { // if the DB connection is a success
 
 $e->constatus = "connection succesful";
 
-$sql = "INSERT INTO users (firstname, lastname, idnumber)
-VALUES ('$firstname', '$lastname', '$id')";
-$checkuser ="SELECT * FROM users WHERE firstname = '$firstname' AND lastname = '$lastname' AND idnumber = '$id'";
+$sql = "INSERT INTO users (firstname, lastname, idnumber) VALUES ('$firstname', '$lastname', '$id')"; // create variable to hold user DB SQL query
+$checkuser ="SELECT * FROM users WHERE firstname = '$firstname' AND lastname = '$lastname' AND idnumber = '$id'"; // variable that checks if a user with the current name and facebook ID number exists
 
-$searchresult = $conn->query($checkuser);
+$searchresult = $conn->query($checkuser); // query user DB with the checkuser variable info
 
-if ($searchresult->num_rows > 0){
+if ($searchresult->num_rows > 0){ // if any rows in the user table have matching entries
 
     $e->firstname = $firstname;
     $e->lastname = $request->lastname;
-    $e->exists = "already exists";
-    $yourEvents = eventDB("events", "owner", $id, $conn); //"SELECT * FROM events WHERE owner = '$id'";
-    if ($yourEvents->num_rows > 0) {
+    $e->exists = "already exists"; // JSON info to let the client know the user already exists
+    $yourEvents = eventDB2("events", "owner", $id, $conn); //"SELECT * FROM events WHERE owner = '$id'"; look for any events the user owns
+    $e->eventlist = $yourEvents;
+    $subbedEvents = eventDB2("subscriptions", "owner", $id, $conn); //  "SELECT * FROM subscriptions WHERE owner ='$id'"; look for any events the user is subscribed to
+    $a = $subbedEvents;
+            for ($i=0; $i < count($a); $i++){ // loop through the users subscribed events list
+                  $stuff = $a[$i]['eventID']; //capture current subsribed eventID in $stuff variable
+                  $matchSubbed = eventDB2("events", "id", $stuff, $conn); //query the event table with the eventID taken from the subscription table
+                  array_push($e->sublist, $matchSubbed[0]); // push the matched events to the JSON object
+                }
 
-           while($row = $yourEvents->fetch_assoc()) {
-           array_push($e->eventlist, $row);
-
-          }
-
-    }else{
-            $e->eventslist = "no events";
-          }
-    $subbedEvents = eventDB("subscriptions", "owner", $id, $conn); // Args being passed are equiv to "SELECT * FROM subscriptions WHERE owner ='$id'";
-    if ($subbedEvents->num_rows > 0){
-
-      while($row = $subbedEvents->fetch_assoc()) {
-
-            $stuff = $row['eventID'];
-            $matchSubbed = eventDB("events", "id", $stuff, $conn);   // "SELECT * FROM events WHERE id ='$stuff'";
-
-            if ($matchSubbed->num_rows > 0){
-
-            $newrow = $matchSubbed->fetch_assoc();
-
-            array_push($e->sublist, $newrow);
-
-          }
-
-}
-
-    }else{
-      $e->sublist = "no subscriptions";
-    }
-
-}else {
+}else { // if the user doesnt exist we create a user
 
 if ($conn->query($sql) === TRUE) {
     $e->exists = "Record Created";
@@ -105,10 +99,11 @@ if ($conn->query($sql) === TRUE) {
 }
 }
 }
-$encode = json_encode($e);
+$encode = json_encode($e); // encodes the JSON object
 
 
-print_r($encode);
+print_r($encode); // prints the JSON objet to be caught by our clients POST request
+
 
 
 

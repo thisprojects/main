@@ -14,6 +14,7 @@ class Interact extends React.Component {
                               <div className="interact">
                                 <p>{this.props.componentName}</p>
                                 {this.props.eventlist}
+                                <p>Comments:</p>
                               </div>
                     )
                   }else{ return(null)}
@@ -145,7 +146,7 @@ class App extends Component {
                                           window.FB.api(user, {fields:'first_name,last_name,picture'}, function(response) {
                                                     console.log(response);
                                                     this.setState({user: {firstname: response.first_name, lastname: response.last_name, id: response.id, picture: response.picture.data.url,}});
-                                                    this._phpFetch('http://localhost:80/post.php', 'POST', this.state.user);
+                                                    this._phpFetch('http://localhost:8888/post.php', 'POST', this.state.user);
                                           }.bind(this));
                         }.bind(this));
 
@@ -176,7 +177,8 @@ class App extends Component {
 
                          {input.map (input  => // map the array and return the output items in HTML list
 
-                             <ul key={input.id.toString()}>
+                             <ul key={input.description.toString()}>
+                                 <li key={input.ID.toString()}>Event ID {input.ID}</li>
                                  <li key={input.description.toString()}>Description {input.description}</li>
                                  <li key={input.date.toString()}>Date {input.date}</li>
                                  <li key={input.body.toString()}>Event Info {input.body}</li>
