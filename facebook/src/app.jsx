@@ -14,7 +14,6 @@ class Interact extends React.Component {
                               <div className="interact">
                                 <p>{this.props.componentName}</p>
                                 {this.props.eventlist}
-                                <p>Comments:</p>
                               </div>
                     )
                   }else{ return(null)}
@@ -51,7 +50,7 @@ class App extends Component {
 
       constructor(props){
                           super(props);
-                          this.state = {loggedIn: false, user: {picture: "", firstname: "", lastname: "", id:""}, data: {eventlist: "", sublist: ""}};
+                          this.state = {loggedIn: false, user: {picture: "", firstname: "", lastname: "", id:""}, data: {eventlist: [], sublist: [], comments: []}};
 
 
       } // close constructor
@@ -87,8 +86,11 @@ class App extends Component {
                                         <h1 className="App-title">Milk Club</h1>
 
                                         {this.state.loggedIn ?
-                                        <button onClick={this._fbLogout.bind(this)}> Sign Out </button> :
-                                        <button onClick={this._fbLogin.bind(this)}>Login With Facebook</button>}
+                                          <div>
+                                        <button onClick={this._fbLogout.bind(this)}> Sign Out </button>
+                                        <br />
+                                        <a href="javascript:window.open('http://localhost:8888/newevent.php','_blank','height=600,width=400')">New Event</a>
+                                        </div> : <button onClick={this._fbLogin.bind(this)}>Login With Facebook</button>}
 
                                         <div>
                                                 {this.state.loggedIn ? <p>Logged in</p> : <p>Please Log In</p>}
@@ -171,6 +173,24 @@ class App extends Component {
              console.log("array map");
              //console.log(input.toString());
 
+             for (var i=0; i < this.state.data.comments.length ; i++){
+
+                 for (var x=0; x < input.length; x++){
+
+
+                          if (this.state.data.comments[i].eventID == input[x].ID){
+
+                                  if (!input[x].comments){ input[x].comments = []};
+
+                          input[x].comments.push(this.state.data.comments[i]);
+
+                        }
+
+                 }
+
+             }
+
+
                  return (
 
                      <div key={input.toString()}>
@@ -185,6 +205,17 @@ class App extends Component {
                                  <li key={input.organiser.toString()}>Organiser {input.organiser}</li>
                                  <li key={input.location.toString()}>Location {input.location}</li>
                                  <li key={input.url.toString()}>URL {input.url}</li>
+
+                                 {input.comments ? input.comments.map (input2 =>
+
+                                        <ul key={input2.ID.toString()}>
+                                        <li key={input2.comments.toString()}>{input2.comments}</li>
+                                        <li key={input2.owner.toString()}>{input2.owner}</li>
+
+
+                            </ul>) : <p>No Comments</p>}
+                              <button onClick={this._subscribe.bind(this, input)}>Subscribe!</button>
+
                              </ul>
 
                          )}
@@ -204,6 +235,11 @@ class App extends Component {
          }   // close else
 
      }   // close array map method
+
+     _subscribe(input) {
+
+       console.log("subscribed" + input.ID)
+     }
   } // close componenet
 
 export default App;
