@@ -12,12 +12,8 @@ class Interact extends React.Component {
 
                     return (
                               <div className="interact">
-                                <p>{this.props.description}</p>
-                                {this.props.id}
-                                {this.props.date}
-                                {this.props.body}
-                                {this.props.orgnaiser}
-                                {this.props.url}
+                                <p>{this.props.componentName}</p>
+                                {this.props.eventlist}
                               </div>
                     )
                   }else{ return(null)}
@@ -54,7 +50,7 @@ class App extends Component {
 
       constructor(props){
                           super(props);
-                          this.state = {events: [], loggedIn: false, user: {picture: "", firstname: "", lastname: "", id:""}, data: {eventlist: []}};
+                          this.state = {loggedIn: false, user: {picture: "", firstname: "", lastname: "", id:""}, data: {eventlist: [], sublist: [], comments: []}};
 
 
       } // close constructor
@@ -93,13 +89,16 @@ class App extends Component {
                                           <div>
                                         <button onClick={this._fbLogout.bind(this)}> Sign Out </button>
                                         <br />
-
+                                        <a href="javascript:window.open('http://localhost:8888/newevent.php','_blank','height=600,width=400')">New Event</a>
                                         </div> : <button onClick={this._fbLogin.bind(this)}>Login With Facebook</button>}
 
                                         <div>
-                                          <br />
+                                                {this.state.loggedIn ? <p>Logged in</p> : <p>Please Log In</p>}
                                                 <Userdetails firstname={this.state.user.firstname} lastname={this.state.user.lastname} picture={this.state.user.picture} />
-                                                {this.state.loggedIn ? <div>Logged in {this._arrayMap(this.state.data.eventlist)}</div> : <p>Please Log In</p>}
+                                                <Interact loggedIn={this.state.loggedIn} componentName="Your Events" eventlist={this._arrayMap(this.state.data.eventlist)}/>
+                                                <Interact loggedIn={this.state.loggedIn} componentName="Subscribed Events" eventlist={this._arrayMap(this.state.data.sublist)}/>
+
+
                                         </div>
                                  </div>
                              </div>
@@ -139,7 +138,7 @@ class App extends Component {
                     window.FB.logout(function(response) {
                               console.log("logged out");
                     });
-                    this.setState({loggedIn: false , user:{picture: "", firstname: "", lastname: ""}});
+                    this.setState({loggedIn: false, picture: "", firstname: "", lastname: ""});
       } // end of fb logout
 
       _fbGetdata () { // fetches user details to display - name and picture. also gets short term token
@@ -149,34 +148,69 @@ class App extends Component {
                                           window.FB.api(user, {fields:'first_name,last_name,picture'}, function(response) {
                                                     console.log(response);
                                                     this.setState({user: {firstname: response.first_name, lastname: response.last_name, id: response.id, picture: response.picture.data.url,}});
-                                                    this._phpFetch('http://localhost:8888/post.php', 'POST');
+                                                    this._phpFetch('http://localhost:8888/post.php', 'POST', this.state.user);
                                           }.bind(this));
                         }.bind(this));
 
 
       }// end of fb get data
 
-     _phpFetch (url, method){
-      
+     _phpFetch (url, method, body){
+       console.log(body);
                   fetch(url, {
                                method: method,
+                               body: JSON.stringify(body)
 
                   }).then (response => response.json()).then(data => this.setState({data: data})).catch(error => console.log(error));
 
      }
 
      _arrayMap (input){      // array map method
-
+        console.log(input);
          if (input){ // if the array argument is not empty
+
+             //let input = test; // cache passed argument as local variable
+             console.log("array map");
+             //console.log(input.toString());
+
+             for (var i=0; i < this.state.data.comments.length ; i++){
+
+                 for (var x=0; x < input.length; x++){
+
+
+                          if (this.state.data.comments[i].eventID == input[x].ID){
+
+                                  if (!input[x].comments){ input[x].comments = []};
+
+                          input[x].comments.push(this.state.data.comments[i]);
+
+                        }
+
+                 }
+
+             }
+
 
                  return (
 
                      <div key={input.toString()}>
 
                          {input.map (input  => // map the array and return the output items in HTML list
-
-                              <Interact key={input.ID.toString()} loggedIn={this.state.loggedIn} componentName="Events" id={input.ID} date={input.date} description={input.description} body={input.body} organiser={input.organiser} url={input.url}/>
-
+                             <ul key={input.description.toString()}>
+                                 <li key={input.ID.toString()}>Event ID {input.ID}</li>
+                                 <li key={input.description.toString()}>Description {input.description}</li>
+                                 <li key={input.date.toString()}>Date {input.date}</li>
+                                 <li key={input.body.toString()}>Event Info {input.body}</li>
+                                 <li key={input.organiser.toString()}>Organiser {input.organiser}</li>
+                                 <li key={input.location.toString()}>Location {input.location}</li>
+                                 <li key={input.url.toString()}>URL {input.url}</li>
+                                 {input.comments ? input.comments.map (input2 =>
+                                        <ul key={input2.ID.toString()}>
+                                        <li key={input2.comments.toString()}>{input2.comments}</li>
+                                        <li key={input2.owner.toString()}>{input2.owner}</li>
+                            </ul>) : <p>No Comments</p>}
+                              <button onClick={this._subscribe.bind(this, input)}>Subscribe!</button>
+                             </ul>
                          )}
 
                      </div>
@@ -195,7 +229,10 @@ class App extends Component {
 
      }   // close array map method
 
+     _subscribe(input) {
 
+       console.log("subscribed" + input.ID)
+     }
   } // close componenet
 
 export default App;

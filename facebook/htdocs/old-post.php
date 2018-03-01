@@ -6,10 +6,16 @@
   $postdata = file_get_contents("php://input");
   $request = json_decode($postdata);
 
+  $firstname = $request->firstname;
+  $lastname = $request->lastname;
+
+
+  $id = $request->id;
+
   $wibbins = "events";
   $stuff = "";
 
-
+$lastname = addslashes($lastname);
 $servername = "localhost";
 $username = "test";
 $password = "testing";
@@ -84,9 +90,42 @@ if ($conn->connect_error) { // if the DB returns an error when we try to connect
 } else { // if the DB connection is a success
 
 $e->constatus = "connection succesful";
+
+$sql = "INSERT INTO users (firstname, lastname, idnumber) VALUES ('$firstname', '$lastname', '$id')"; // create variable to hold user DB SQL query
+$checkuser ="SELECT * FROM users WHERE firstname = '$firstname' AND lastname = '$lastname' AND idnumber = '$id'"; // variable that checks if a user with the current name and facebook ID number exists
+
+$searchresult = $conn->query($checkuser); // query user DB with the checkuser variable info
+
+if ($searchresult->num_rows > 0){ // if any rows in the user table have matching entries
+
+    // set basic user info in our JSON object
+    $e->firstname = $firstname;
+    $e->lastname = $request->lastname;
+    $e->exists = "already exists"; // JSON info to let the client know the user already exists
+
     // pull users events
     $e->eventlist = eventDB2("events", "owner", "%", $conn); //"SELECT * FROM events WHERE owner = '$id'"; look for any events the user owns
+    //look for any event comments
+    $e->comments = eventDB2("comments", "owner", "%", $conn);
+    // look for any subscribed events
+    $subbedEvents = eventDB2("subscriptions", "owner", $id, $conn); //  "SELECT * FROM subscriptions WHERE owner ='$id'"; look for any events the user is subscribed to
+    $e->sublist = crossRef($subbedEvents, $conn); //cross reference subscriptions table with events table to resolve which events user is subsribed to
+    //look for any event comments
 
+
+
+
+
+
+
+}else { // if the user doesnt exist we create a user
+
+if ($conn->query($sql) === TRUE) {
+    $e->exists = "Record Created";
+} else {
+    $e->error = " Error: " . $sql . " " . $conn->error;
+}
+}
 }
 $encode = json_encode($e); // encodes the JSON object
 
