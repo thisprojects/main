@@ -11,14 +11,39 @@ class Interact extends React.Component {
             if (this.props.loggedIn){
 
                     return (
-                              <div className="interact">
-                                <p>{this.props.description}</p>
-                                {this.props.id}
-                                {this.props.date}
-                                {this.props.body}
-                                {this.props.orgnaiser}
-                                {this.props.url}
-                              </div>
+
+
+                                <table className="interact">
+
+                                <tr>
+                                    <th colspan="2">{this.props.description}</th>
+                                </tr>
+
+                                <tr>
+                                    <td>Date </td>
+                                    <td>{this.props.date}</td>
+                                </tr>
+                                <tr>
+                                    <td>Info </td>
+                                    <td>{this.props.body}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Organiser </td>
+                                    <td>{this.props.organiser}</td>
+                                </tr>
+                                <tr>
+                                    <td>URL</td>
+                                    <td><a href={this.props.url}>{this.props.url}</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Location</td>
+                                    <td>{this.props.location}</td>
+                                </tr>
+
+                            </table>
+
+
                     )
                   }else{ return(null)}
         }
@@ -36,8 +61,9 @@ class Userdetails extends React.Component {
 
                   <div className="userDetails">
                           {this.props.picture ? <img src={this.props.picture}></img> : <p></p>}
-                          <br />
-                          <p>Welcome {this.props.firstname + " " + this.props.lastname} !</p>
+                          Logged In As {this.props.firstname + " " + this.props.lastname}
+
+
 
                   </div>
 
@@ -87,14 +113,15 @@ class App extends Component {
                     return (
                               <div className="App">
                                   <div className="login">
-                                        <h1 className="App-title">Milk Club</h1>
+
+                                        <h1 className="App-title">Event App</h1>
 
                                         {this.state.loggedIn ?
                                           <div>
                                         <button onClick={this._fbLogout.bind(this)}> Sign Out </button>
                                         <br />
 
-                                        </div> : <button onClick={this._fbLogin.bind(this)}>Login With Facebook</button>}
+                                      </div>: <button onClick={this._fbLogin.bind(this)}>Login With Facebook</button>}
 
                                         <div>
                                           <br />
@@ -157,7 +184,7 @@ class App extends Component {
       }// end of fb get data
 
      _phpFetch (url, method){
-      
+
                   fetch(url, {
                                method: method,
 
@@ -175,7 +202,7 @@ class App extends Component {
 
                          {input.map (input  => // map the array and return the output items in HTML list
 
-                              <Interact key={input.ID.toString()} loggedIn={this.state.loggedIn} componentName="Events" id={input.ID} date={input.date} description={input.description} body={input.body} organiser={input.organiser} url={input.url}/>
+                              <Interact key={input.ID.toString()} loggedIn={this.state.loggedIn} componentName="Events" location={input.location} id={input.ID} date={input.date} description={input.description} body={input.body} organiser={input.organiser} url={input.url}/>
 
                          )}
 
