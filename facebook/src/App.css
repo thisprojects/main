@@ -30,25 +30,77 @@ margin-top:  50px;
   to { transform: rotate(360deg); }
 }
 
+@keyframes fadeOut { from {opacity:1;} to {opacity:0;}}
+
 .interact {
 
   display: inline-block;
+  opacity: 1;
+  transition: all 1s ;
 }
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.fade-in {
+  opacity:0;  /* make things invisible upon start */
+  -webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+  -moz-animation:fadeIn ease-in 1;
+  animation:fadeIn ease-in 1;
+
+  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:1s;
+  -moz-animation-duration:1s;
+  animation-duration:1s;
+  transition: all 1s;
+}
+
+.fade-out {
+
+opacity: 0!important;
+transition: all 1s;
+}
+
+
+
 
 .userDetails {
 
   text-align:left;
   padding: 20px;
   display: inline-block;
+  position: relative;
+  left: 15%;
+  transition: all 2s;
 }
+
 img {
 
   padding: 5px;
+  border-radius: 50px;
 }
 .App-title {
 
   text-align: center;
-  padding: 20px;
+
+position: relative;
+right: 0%;
+  transition: all 2s;
+  display:inline-block;
+  width: 40%;
+
+}
+
+.title-move {
+transition: all 2s;
+right: 30%;
+position: relative;
+display:inline-block;
+width:40%;
+
 }
 table {
     max-width: 30%;

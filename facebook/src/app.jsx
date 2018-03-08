@@ -10,10 +10,12 @@ class Interact extends React.Component {
 
             if (this.props.loggedIn){
 
+
                     return (
 
 
-                                <table className="interact">
+                                <table id="test" className="fade-in interact">
+
 
                                 <tr>
                                     <th colspan="2">{this.props.description}</th>
@@ -43,9 +45,11 @@ class Interact extends React.Component {
 
                             </table>
 
-
                     )
-                  }else{ return(null)}
+                  }else{
+
+
+                    return(null);}
         }
 
 
@@ -59,9 +63,9 @@ class Userdetails extends React.Component {
               if (this.props.firstname) {
                 return (
 
-                  <div className="userDetails">
+                  <div id="userDetails" className="userDetails fade-in">
                           {this.props.picture ? <img src={this.props.picture}></img> : <p></p>}
-                          Logged In As {this.props.firstname + " " + this.props.lastname}
+                          {this.props.firstname + " " + this.props.lastname}
 
 
 
@@ -112,24 +116,27 @@ class App extends Component {
           console.log(this.state.data);
                     return (
                               <div className="App">
-                                  <div className="login">
 
-                                        <h1 className="App-title">Event App</h1>
+                                  <div id="app-title" className="App-title">
+
+                                        <h1 id="app-title" className="App-title">Event App</h1>
 
                                         {this.state.loggedIn ?
                                           <div>
                                         <button onClick={this._fbLogout.bind(this)}> Sign Out </button>
+
                                         <br />
 
-                                      </div>: <button onClick={this._fbLogin.bind(this)}>Login With Facebook</button>}
-
+                                      </div>: <div><button onClick={this._fbLogin.bind(this)}>Login With Facebook</button></div>}
+                                    </div>
+                                    <Userdetails firstname={this.state.user.firstname} lastname={this.state.user.lastname} picture={this.state.user.picture} />
                                         <div>
                                           <br />
-                                                <Userdetails firstname={this.state.user.firstname} lastname={this.state.user.lastname} picture={this.state.user.picture} />
-                                                {this.state.loggedIn ? <div>Logged in {this._arrayMap(this.state.data.eventlist)}</div> : <p>Please Log In</p>}
+
+                                                {this.state.loggedIn ? <div>{this._arrayMap(this.state.data.eventlist)}</div> : <p className="fade-in">Please Log In</p>}
                                         </div>
                                  </div>
-                             </div>
+
 
                            ) // close return
                   } // close render
@@ -155,6 +162,7 @@ class App extends Component {
       } // end of fb login
 
       _fbIsLoggedin () {
+                          document.getElementById("app-title").classList.add("title-move");
 
                           this.setState({loggedIn: true});
                           console.log("login state is " + this.state.loggedIn);
@@ -163,10 +171,15 @@ class App extends Component {
       } // end of isLoggedIn
 
       _fbLogout() { // logs user out of app  - will also log out of facebook, providing they are not logged into facebook or another facebook app.
+                    document.getElementById("userDetails").classList.add("fade-out");
                     window.FB.logout(function(response) {
                               console.log("logged out");
                     });
-                    this.setState({loggedIn: false , user:{picture: "", firstname: "", lastname: ""}});
+                    document.getElementById("app-title").classList.remove("title-move");
+
+
+                  this.setState({loggedIn: false , user:{picture: "", firstname: "", lastname: ""}});
+
       } // end of fb logout
 
       _fbGetdata () { // fetches user details to display - name and picture. also gets short term token
