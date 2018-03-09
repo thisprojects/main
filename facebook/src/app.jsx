@@ -14,6 +14,7 @@ class Interact extends React.Component {
                     return (
 
 
+
                                 <table id="test" className="fade-in interact">
 
 
@@ -44,7 +45,7 @@ class Interact extends React.Component {
                                 </tr>
 
                             </table>
-
+                  
                     )
                   }else{
 
@@ -64,8 +65,8 @@ class Userdetails extends React.Component {
                 return (
 
                   <div id="userDetails" className="userDetails fade-in">
-                          {this.props.picture ? <img src={this.props.picture}></img> : <p></p>}
-                          {this.props.firstname + " " + this.props.lastname}
+                        <h3>{this.props.picture ? <img src={this.props.picture}></img> : <p></p>}
+                          {this.props.firstname + " " + this.props.lastname}</h3>
 
 
 
@@ -211,7 +212,7 @@ class App extends Component {
 
                  return (
 
-                     <div key={input.toString()}>
+                     <div className="results" key={input.toString()}>
 
                          {input.map (input  => // map the array and return the output items in HTML list
 
