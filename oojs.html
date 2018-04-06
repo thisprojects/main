@@ -4,17 +4,19 @@
 <div >
 <button id="click">Click!</button>
 <p id="wibbler"></p>
-<p id="hibbler"></p>
+<p id="hibbler">Slide Right</p>
 <p id="zibbler">fade</p>
 <p id="dibbler"></p>
-<p id="bibbler"></p>
+<p id="bibbler">Slide Left</p>
+<p id="top">Slide Top </p>
 
 </div>
 <script>
 
 function nQuery(){
 
-this.element = "";
+
+this.element= "";
 
 this.select = function (element) {
 
@@ -24,14 +26,140 @@ return this;
 
 this.click = function (callback) {
 
-document.getElementById(this.element).onclick = (function() {callback();});
+var le = nQ.element;
+
+document.getElementById(le).onclick = (function() {callback();});
 return this;
 }
 
 this.HTML = function (input) {
-document.getElementById(this.element).innerHTML = input;
+
+var le = nQ.element;
+
+document.getElementById(le).innerHTML = input;
 
 return this;
+}
+
+this.fdein = function (speed) {
+
+      var animId;
+      var x=0.0;
+      var le = nQ.element;
+
+      function fade() {
+
+          x += speed;
+          document.getElementById(le).style.opacity = x;
+            console.log(le);
+              if (x > 1.0){
+                    cancelAnimationFrame(animId);
+                    return;
+              }
+
+         animId = requestAnimationFrame(fade);
+      }
+
+      animId = requestAnimationFrame(fade);
+
+      return this;
+
+}
+
+this.fdeout = function (speed){
+
+      var animId;
+      var x=1.0;
+      var le = nQ.element;
+
+      function fade() {
+
+          x -= speed;
+          document.getElementById(le).style.opacity = x;
+
+              if (x < 0.0){
+                    cancelAnimationFrame(animId);
+                    return;
+              }
+
+          animId = requestAnimationFrame(fade);
+      }
+
+      animId = requestAnimationFrame(fade);
+
+      return this;
+}
+
+this.sldrgt = function (srt, fin) {
+
+    var animId;
+    var el = nQ.element;
+    document.getElementById(el).style.position = "relative";
+
+    function slide() {
+
+          srt += 1;
+          document.getElementById(el).style.left = srt;
+
+          if (srt >= fin){
+                cancelAnimationFrame(animId);
+                return;
+          }
+          animId = requestAnimationFrame(slide);
+
+          }
+
+          animId = requestAnimationFrame(slide);
+          return this;
+
+}
+
+this.sldlft = function (srt, fin) {
+
+    var animId;
+    var el = nQ.element;
+    document.getElementById(el).style.position = "relative";
+
+    function slide() {
+
+          srt -= 1;
+          document.getElementById(el).style.right = srt;
+
+          if (srt <= fin){
+                cancelAnimationFrame(animId);
+                return;
+          }
+          animId = requestAnimationFrame(slide);
+
+          }
+
+          animId = requestAnimationFrame(slide);
+          return this;
+
+}
+
+this.sldtop = function (srt, fin) {
+
+    var animId;
+    var el = nQ.element;
+    document.getElementById(el).style.position = "relative";
+
+    function slide() {
+
+          srt += 1;
+          document.getElementById(el).style.top = srt;
+
+          if (srt >= fin){
+                cancelAnimationFrame(animId);
+                return;
+          }
+          animId = requestAnimationFrame(slide);
+
+          }
+
+          animId = requestAnimationFrame(slide);
+          return this;
+
 }
 
 
@@ -45,6 +173,14 @@ nQ.select('wibbler').HTML("its working");
 });
 
 nQ.select("dibbler").HTML("dibbler says");
+
+nQ.select("zibbler").fdeout(0.02);
+
+nQ.select("hibbler").sldrgt(0,80);
+
+nQ.select("bibbler").sldlft(50, -50);
+
+nQ.select("top").sldtop(0, 50);
 
 
 
