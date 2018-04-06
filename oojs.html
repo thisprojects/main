@@ -1,0 +1,61 @@
+<html>
+<body>
+
+<div >
+<button id="click">Click!</button>
+<p id="wibbler"></p>
+<p id="hibbler"></p>
+<p id="zibbler">fade</p>
+<p id="dibbler"></p>
+<p id="bibbler"></p>
+
+</div>
+<script>
+
+function nQuery(){
+
+this.element = "";
+
+this.select = function (element) {
+
+this.element = element;
+return this;
+};
+
+this.click = function (callback) {
+
+document.getElementById(this.element).onclick = (function() {callback();});
+return this;
+}
+
+this.HTML = function (input) {
+document.getElementById(this.element).innerHTML = input;
+
+return this;
+}
+
+
+};
+
+nQ = new nQuery();
+
+nQ.select('click').click(function(){
+
+nQ.select('wibbler').HTML("its working");
+});
+
+nQ.select("dibbler").HTML("dibbler says");
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
