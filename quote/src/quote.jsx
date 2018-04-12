@@ -5,13 +5,13 @@ class Quote extends React.Component {
 
 constructor (props){
             super(props);
-            this.state = {results: [] }
+            this.state = {results: [], waiting: false };
 
         }
 
 componentDidMount () {
 
- this._fetchIT ();
+ this._napTime();
 
 }
 
@@ -28,15 +28,21 @@ console.log(this.state.results);
       <div className="quote">
         {this._jsonList()}
       </div>
-      <button onClick={this._fetchIT.bind(this)}>New quote!</button>
+      {this.state.waiting ? <button>Please Wait!</button> : <button onClick={this._napTime.bind(this)}>New quote!</button>}
       </div>
 
     );
   }
 
+_napTime(){
+this.setState({results:[], waiting: true});
+setTimeout(this._fetchIT.bind(this), 1500);
+
+}
 _jsonList (){
 
     if (this.state.results.quoteText){
+
         let quote = this.state.results
         return (
             <div>
@@ -58,9 +64,17 @@ _jsonList (){
 }
 
 _fetchIT () {
+
+
     fetch('http://localhost:80/quoteproxy.php')
       .then (response => response.json())
-      .then(data => this.setState({ results: data }));
+      .then(data => this.setState({ results: data, waiting:false })).catch((error) => {
+        console.log(error + " Bad Json Response - Re-Initiating Call To API")
+
+        this._napTime();
+
+      });
+
 }
 }
 
