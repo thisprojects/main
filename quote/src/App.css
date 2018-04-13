@@ -2,6 +2,12 @@
 @-moz-keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
 @keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
 
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+@keyframes slidein { from {margin-left: 100%; width: 100%;} to {margin-left: 0%;width: 100%}}
+
 .fadeOut {
   opacity:1;  /* make things visible upon start */
   -webkit-animation:fadeOut ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
@@ -18,7 +24,23 @@
   transition: all 3s;
 }
 
-.none {
+.fadeIn {
+opacity: 0;
+-webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+-moz-animation:fadeIn ease-in 1;
+animation:fadeIn ease-in 1;
 
-  display: none;
+-webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 0)*/
+-moz-animation-fill-mode:forwards;
+animation-fill-mode:forwards;
+
+-webkit-animation-duration:1s;
+-moz-animation-duration:1s;
+animation-duration:1s;
+transition: all 1s;
+}
+
+.slide {
+  animation-duration: 3s;
+  animation-name: slidein;
 }
