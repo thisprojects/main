@@ -17,3 +17,8 @@
   animation-duration:3s;
   transition: all 3s;
 }
+
+.none {
+
+  display: none;
+}
