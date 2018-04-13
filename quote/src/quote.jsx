@@ -1,5 +1,6 @@
 import React from 'react';
 import Fetch from 'react-fetch';
+import './App.css';
 
 class SaveQuote extends React.Component {
 
@@ -11,8 +12,10 @@ if (this.props.saved.length){
 
   return (
 <div>
-{this.props.exists ? <p>This Quote Is Already In The Bank!</p> : <p></p>}
-
+<div>
+{this.props.exists ? <p className="fadeOut">This Quote Is Already In The Bank!</p> : <p></p>}
+</div>
+<div>
 {this.props.saved.map (input  => // map the array and return the output items in HTML list
 
     <ul key={input.toString()}>
@@ -21,6 +24,7 @@ if (this.props.saved.length){
 
 )}
 
+</div>
 </div>
 )
 
@@ -144,7 +148,7 @@ _buttons() {
 }
 
 _saveIt(){
-
+this.setState({exists: false})
 let x = this.state.savedQuotes.indexOf(this.state.results.quoteText);
 console.log (x);
 if (x == -1){
@@ -154,6 +158,7 @@ this.setState({savedQuotes: this.state.savedQuotes.concat([this.state.results.qu
 
 this.setState({exists: true})
 console.log ("this quote already exists");
+
 
 }
 

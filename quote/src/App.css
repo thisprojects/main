@@ -1,28 +1,19 @@
-.App {
-  text-align: center;
-}
+@-webkit-keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
+@-moz-keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
+@keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
+.fadeOut {
+  opacity:1;  /* make things visible upon start */
+  -webkit-animation:fadeOut ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+  -moz-animation:fadeOut ease-in 1;
+  animation:fadeOut ease-in 1;
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
+  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 0)*/
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
 
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  -webkit-animation-duration:3s;
+  -moz-animation-duration:3s;
+  animation-duration:3s;
+  transition: all 3s;
 }
