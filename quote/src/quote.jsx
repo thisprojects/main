@@ -47,7 +47,7 @@ render() {
 return (
 
 <div>
-Enter your own quote!
+Input Your quote Here
 </div>
 
 )
@@ -89,7 +89,7 @@ class Quote extends React.Component {
 
 constructor (props){
             super(props);
-            this.state = {results: ["Re-Rendering - Quote Is Empty"], waiting: false, tries: 0, message: "", savedQuotes: [], exists: false };
+            this.state = {results: ["Re-Rendering - Quote Is Empty"], waiting: false, tries: 0, message: "", savedQuotes: [], exists: false, toggle: true };
 
 
 
@@ -112,15 +112,12 @@ console.log(this.state.results);
       </div>
 
       <div className="quote">
-        <DisplayQuote results={this.state.results} message={this.state.message} />
+      {this.state.toggle ? <DisplayQuote results={this.state.results} message={this.state.message} /> : <InputQuote />}
       </div>
       <div className="buttons">
-      {this.state.waiting ? <p>Please Wait!</p> : this._buttons()}
-
-
-
+      {this.state.waiting ? <div></div> : this._buttons()}
       </div>
-      <InputQuote />
+
       <SaveQuote saved={this.state.savedQuotes} exists={this.state.exists}/>
       </div>
 
@@ -130,7 +127,7 @@ console.log(this.state.results);
 _napTime(apiTries){
 
 
-this.setState({results:["Re-Rendering - Quote Is Empty"], waiting: true, message: "Acquiring Inspiration...", exists: false});
+this.setState({results:["Re-Rendering - Quote Is Empty"], waiting: true, message: "Acquiring Inspiration...", exists: false, toggle: true});
 setTimeout(this._fetchIT.bind(this, apiTries), 1500);
 
 }
@@ -139,20 +136,29 @@ _buttons() {
 
   return (
     <div>
-    <button id="newQuote" onClick={this._napTime.bind(this, 1)}>New Quote!</button>
+    <button id="newQuote" onClick={this._napTime.bind(this, 1)}>Random Quote!</button>
     <button id="saveQuote" onClick={this._saveIt.bind(this)}>Save Quote</button>
+    <button className="inputQbutton" onClick={this._toggleQuote.bind(this)}>Enter Your Own Quote!</button>
     </div>
   );
 
 
 }
 
+_toggleQuote() {
+
+this.setState({toggle: !this.state.toggle})
+console.log(this.state.toggle);
+
+}
+
 _saveIt(){
-this.setState({exists: false})
-let x = this.state.savedQuotes.indexOf(this.state.results.quoteText);
+
+let z = this.state.results.quoteText + " - " + this.state.results.quoteAuthor
+let x = this.state.savedQuotes.indexOf(z);
 console.log (x);
 if (x == -1){
-this.setState({savedQuotes: this.state.savedQuotes.concat([this.state.results.quoteText])});
+this.setState({savedQuotes: this.state.savedQuotes.concat([z])});
 
 }else{
 
