@@ -6,26 +6,26 @@ class SaveQuote extends React.Component {
 
     render() {
 
-        if (this.props.saved.length){
+        if (this.props.saved.length){  // if there is a saved quote array in existance
 
           return (
-                    <div>
+                    <div className="saveIt">
 
-                          {this.props.exists ?
-                                            <p className="exists fadeOut">This Quote And Author Combination Is Already In The Bank!</p>
-                                            : <p></p> }
+                          {this.props.saved.map (input  => // map the quote array to quote paragraphs
 
-                          {this.props.saved.map (input  => // map the array and return the output items in HTML list
 
-                              <ul key={input.toString()}>
-                                  <li className="fadeIn" key={input.toString()}>{input}</li>
-                              </ul>
+                                  <p className="fadeIn" key={input.toString()}>{input}</p>
+
                           )}
-
+                          <div className="exists">
+                              {this.props.exists ? // if the quote already exists display the below error
+                                                <p className="fadeOut">This Quote And Author Combination Is Already In The Bank!</p>
+                                                : <p></p> }
+                          </div>
                     </div>
                 )
         } else {
-                return (
+                return ( // if there is no quote array return an empty div
                           <div></div>
                 )
        }
@@ -36,29 +36,29 @@ class DisplayQuote extends React.Component{
 
     render (){
 
-      let quote = this.props.results
+      let quote = this.props.results // cache results prop - purely for ease of reading the following lines
 
-      if (quote.quoteText){
+      if (quote.quoteText){ // if a quote is passed to the componenet
 
-          return (
+          return ( // display the quote and the author
 
-            <div className="quoteBox fadeIn">
+            <div className="fadeIn">
                  {quote.quoteText + " - " + quote.quoteAuthor}
             </div>
           )
 
       } else {
-              return (
+              return ( // if there is no quote being passed through, display the loading message
 
                   <div className="messageBox">
-                      <h1>{this.props.message}</h1>
+                      <h2>{this.props.message}</h2>
                   </div>
               )
       }
    }
 }
 
-class Quote extends React.Component {
+class Quote extends React.Component { // our parent component
 
 constructor (props){
                     super(props);
@@ -67,7 +67,7 @@ constructor (props){
 
 componentDidMount () {
 
-    this._napTime(1);
+    this._napTime(1); // start app by calling API , the argument is the base number of attempts to contact the API - purely for the purpose of counting caught errors
 }
   render() {
 
@@ -75,32 +75,34 @@ componentDidMount () {
       <div className="quote">
 
             <div className="header">
-                <h1>Amazing Quotes</h1>
-            </div>
+            <i class="far fa-comment-alt fa-7x"></i>
 
-            <div className="quote">
-                  {this.state.toggle ?
-                                    <DisplayQuote results={this.state.results} message={this.state.message} />
-                                     : this._inputBox()}
-            </div>
 
-            <div className="buttons">
-                  {this.state.waiting ?
-                                      <div></div>
-                                      : this._buttons()}
             </div>
+            <div className="quoteBox">
+                  <div className="quoteText">
+                        {this.state.toggle ? // are we generating random quotes or inputing our own? The toggle boolean is changed by the "author quote" and "random quote" buttons
+                                           <DisplayQuote results={this.state.results} message={this.state.message} />
+                                           : this._inputBox()}
+                  </div>
 
+                  <div className="buttons">
+                        {this.state.waiting ? // are we waiting for an API response? if so hide the buttons
+                                            <div></div>
+                                            : this._buttons()}
+                  </div>
+           </div>
             <SaveQuote saved={this.state.savedQuotes} exists={this.state.exists} />
       </div>
     );
   }
 
-_inputBox() {
+_inputBox() { // form for submitting your own quote
 
-    return (
+    return ( // calls save function on submission. Arguments are the authored quote text and the author, which of course is always "yourself"
       <form onSubmit={this._saveIt.bind(this, this.state.formValue, "Yourself")}>
           <label>
-              <input type="text" value={this.state.formValue} placeholder="Enter Your Quote!" onChange={this._updateAsYouType.bind(this)} />
+              <input type="text" value={this.state.formValue} placeholder="Enter Your Quote" onChange={this._updateAsYouType.bind(this)} />
           </label>
           <input type="submit" value="Save Quote" />
       </form>
@@ -108,13 +110,13 @@ _inputBox() {
 
 }
 
-_updateAsYouType (event) {
+_updateAsYouType (event) { // updates the form contents as you type
 
     this.setState({formValue: event.target.value}); // updates our quote as it is typed into the box
 
 }
 
-_napTime(apiTries){
+_napTime(apiTries){ // prevents the API from being called too frequently.  Calls the http request once timeout has been reached
 
     this.setState({results:[], waiting: true, message: "Acquiring Inspiration...", toggle: true});
 
@@ -122,17 +124,17 @@ _napTime(apiTries){
 
 }
 
-_buttons() {
+_buttons() { // our action buttons
 
   return (
     <div>
-    <button id="newQuote" onClick={this._napTime.bind(this, 1)}>Get Random Quote!</button>
+    <button id="newQuote" onClick={this._napTime.bind(this, 1)}>Random Quote</button>
 
-    {this.state.toggle?
+    {this.state.toggle? // Authored quotes get a separate save button - if we are in Authored mode the main save button is hidden.
                       <button id="saveQuote" onClick={this._saveIt.bind(this, this.state.results.quoteText, this.state.results.quoteAuthor)}>Save Quote</button>
                       : <b></b> }
 
-    <button className="inputQbutton" onClick={this._toggleQuote.bind(this)}>Enter Your Own Quote!</button>
+    <button className="inputQbutton" onClick={this._toggleQuote.bind(this)}>Author Quote</button>
     </div>
   );
 
@@ -144,41 +146,47 @@ _toggleQuote() {
 
 }
 
-_saveIt(quoteText, quoteAuthor, event){
+_saveIt(quoteText, quoteAuthor, event){ // our quote saving function. Also checks for duplicates in saved quotes array.
 
     event.preventDefault();   //prevents form submit from reloading the page
 
-    let z = quoteText + " - " + quoteAuthor
-    let x = this.state.savedQuotes.indexOf(z);
+        if (quoteAuthor.length <= 0){ // if the author argument has no length
 
-        if (x === -1){
-                        this.setState({savedQuotes: this.state.savedQuotes.concat([z])});
+            var quoteAuthor = "Unknown"; // assign an unknown author to the quote
+        }
+
+    let z = quoteText + " - " + quoteAuthor // again this local variable is created for ease of reading the next few lines
+
+    let x = this.state.savedQuotes.indexOf(z); // if the current quote and author are already in the saved quotes array (if no match is found the method returns -1)
+
+        if (x === -1){ // if the current quote + author doesnt match one already in the array
+                        this.setState({savedQuotes: this.state.savedQuotes.concat([z])}); // concatenate the current quote and author to the saved quotes array
         }else{
-                        this.setState({exists: true});
+                        this.setState({exists: true}); // if the quote already exists in the saved quotes array display a message on the page ( see SaveQuote componenet line 20)
 
-                        setTimeout(this._fadeTimer.bind(this), 3000);
+                        setTimeout(this._fadeTimer.bind(this), 3000); // resets the state of the exists variable after a period of time - see below
         }
 }
 
-  _fadeTimer () {
+  _fadeTimer () { // this enables the "quote already exists" message to be displayed each time the save button is pressed, should the quote already exist
                    this.setState({exists: false})
   }
 
-  _fetchIT (apiTries) {
+  _fetchIT (apiTries) { // promised based http request to our API - which has been proxied by a short PHP script
 
           fetch('http://localhost:80/quoteproxy.php')
-                .then (response => response.json())
-                  .then(data => this.setState({ results: data, waiting:false}))
-                    .catch((error) => {
-                                          console.log(error + " Bad Json Response - Re-Initiating Call To API , Attempts = " + apiTries);
+                .then (response => response.json()) // format JSON results
+                  .then(data => this.setState({ results: data, waiting:false})) // when promise resolves, store the results and stop the waiting message
+                    .catch((error) => { // should the API misbehave
+                                          console.log(error + " Bad Json Response - Re-Initiating Call To API , Attempts = " + apiTries); // log out the current api connection attempt
 
-                                            if (apiTries >= 5){
-                                                    this.setState({message: "API Connection Failed. Please Try Again!", waiting: false});
+                                            if (apiTries >= 5){ // if the number of tries reaches 5 
+                                                    this.setState({message: "Lacking Inspiration.....  API Connection Failed. Please Try Again!", waiting: false}); // stop API fetch loop and alert user
                                             } else {
-                                                    this._napTime(apiTries+=1);
+                                                    this._napTime(apiTries+=1); // Creates a loop which increments the tries argument each time.
                                             }
-         });
-  }
+         }); // close fetch
+  } // close fetchIT method
 } // close Quote componenet
 
 export default Quote;
