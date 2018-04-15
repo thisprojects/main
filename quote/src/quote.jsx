@@ -174,13 +174,13 @@ _saveIt(quoteText, quoteAuthor, event){ // our quote saving function. Also check
 
   _fetchIT (apiTries) { // promised based http request to our API - which has been proxied by a short PHP script
 
-          fetch('http://localhost:80/quoteproxy.php')
+          fetch('https://www.thisprojects.co.uk/quoteproxy.php')
                 .then (response => response.json()) // format JSON results
                   .then(data => this.setState({ results: data, waiting:false})) // when promise resolves, store the results and stop the waiting message
                     .catch((error) => { // should the API misbehave
                                           console.log(error + " Bad Json Response - Re-Initiating Call To API , Attempts = " + apiTries); // log out the current api connection attempt
 
-                                            if (apiTries >= 5){ // if the number of tries reaches 5 
+                                            if (apiTries >= 5){ // if the number of tries reaches 5
                                                     this.setState({message: "Lacking Inspiration.....  API Connection Failed. Please Try Again!", waiting: false}); // stop API fetch loop and alert user
                                             } else {
                                                     this._napTime(apiTries+=1); // Creates a loop which increments the tries argument each time.
