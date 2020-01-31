@@ -1,26 +1,21 @@
 # main
+# Welcome to my GitHub repo!
 
-Source files for website www.thisprojects.co.uk
+All project source code is in he src folder. 
 
-all projects are in angular - except thrones.html and facebook project which is in react.
+To install and serve an app locally: 
 
-react source files for thrones.html are in thrones-src/
+  * Clone the repo using git.
+  * Navigate to the relevant project.
+  * Run npm install. 
+  * Run npm start
+  * All done!
 
-**************** Contents
+Tests can be run, using the jest framework,  with npm test. 
 
-Facebook Project - An events app using facebook login - currently work in progress. 
 
-Thrones - A game of thrones random house picker - uses an open game of thrones API 
 
-Crime app - An app which shows local crime data - uses police crime data API
 
-ISS Spotter - A simple app which tells you when the ISS will next be over head - uses NASA API
-
-Zubloids - jQuery game - table top / DND style mechanics - work in progress. 
-
-Compliance Now - starwars themed SAAS style dashboard 
-
-Raspbery Pi Fluke - A network diagnostic application written in Python for Raspberry Pi 
 
 
 

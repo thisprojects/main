@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpaceStationSpotter Matches Snapshot 1`] = `
+<View>
+  <View>
+    <View />
+  </View>
+  <View />
+  <View
+    style={
+      Object {
+        "display": "flex",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "rgba(1, 1, 1, 0.95)",
+          "display": "flex",
+          "height": 1334,
+          "paddingTop": 120,
+          "position": "absolute",
+          "top": 0,
+          "width": 750,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "lightgray",
+            "fontSize": 30,
+            "marginBottom": 20,
+          }
+        }
+      >
+        Space Station Spotter
+      </Text>
+      <Text />
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+          }
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 0.9)",
+              "borderRadius": 10,
+              "color": "gray",
+              "margin": 20,
+              "opacity": 1,
+              "paddingBottom": 15,
+              "paddingLeft": 60,
+              "paddingRight": 60,
+              "paddingTop": 15,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "gray",
+                "fontSize": 17,
+                "padding": 10,
+              }
+            }
+          >
+            Start Spotting!
+          </Text>
+        </View>
+      </View>
+      <View />
+      <View
+        style={
+          Object {
+            "display": "none",
+          }
+        }
+      >
+        <ActivityIndicator
+          animating={true}
+          color="white"
+          hidesWhenStopped={true}
+          size="large"
+          style={
+            Object {
+              "padding": 20,
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+</View>
+`;

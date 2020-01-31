@@ -1,0 +1,402 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Choose Another Location Matches Snapshot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    accessible={true}
+    focusable={true}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "lightgray",
+        "borderRadius": 10,
+        "color": "gray",
+        "margin": 20,
+        "opacity": 1,
+        "paddingBottom": 15,
+        "paddingLeft": 60,
+        "paddingRight": 60,
+        "paddingTop": 15,
+      }
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "gray",
+            "fontSize": 17,
+            "padding": 10,
+          },
+          Object {
+            "color": "dimgray",
+          },
+        ]
+      }
+    >
+      Back
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`DisplayResults Matches Snapshot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "rgba(255, 255, 255, 0.9)",
+      "color": "gray",
+      "display": "flex",
+      "justifyContent": "center",
+      "left": 0,
+      "position": "absolute",
+      "top": 1114,
+      "width": 750,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "gray",
+        "fontSize": 17,
+        "padding": 10,
+      }
+    }
+  >
+    Your Current Location
+  </Text>
+  <View>
+    <Text
+      style={
+        Object {
+          "color": "gray",
+          "fontSize": 20,
+        }
+      }
+    >
+      <Text>
+        1
+         
+      </Text>
+      <Text />
+       27 / Jan / 2020  at  15:03:08
+    </Text>
+  </View>
+  <View>
+    <Text
+      style={
+        Object {
+          "color": "gray",
+          "fontSize": 20,
+        }
+      }
+    >
+      <Text>
+        2
+         
+      </Text>
+      <Text />
+       27 / Jan / 2020  at  15:13:02
+    </Text>
+  </View>
+  <View>
+    <Text
+      style={
+        Object {
+          "color": "gray",
+          "fontSize": 20,
+        }
+      }
+    >
+      <Text>
+        3
+         
+      </Text>
+      <Text />
+       27 / Jan / 2020  at  15:08:57
+    </Text>
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "justifyContent": "center",
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "lightgray",
+          "borderRadius": 10,
+          "color": "gray",
+          "margin": 20,
+          "opacity": 1,
+          "paddingBottom": 15,
+          "paddingLeft": 60,
+          "paddingRight": 60,
+          "paddingTop": 15,
+        }
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "gray",
+              "fontSize": 17,
+              "padding": 10,
+            },
+            Object {
+              "color": "dimgray",
+            },
+          ]
+        }
+      >
+        Back
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Errors Matches Snapshot 1`] = `<View />`;
+
+exports[`GeoCode Matches Snapshot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    accessible={true}
+    focusable={true}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderRadius": 10,
+        "color": "gray",
+        "margin": 20,
+        "opacity": 1,
+        "paddingBottom": 15,
+        "paddingLeft": 60,
+        "paddingRight": 60,
+        "paddingTop": 15,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "gray",
+          "fontSize": 17,
+          "padding": 10,
+        }
+      }
+    >
+      Start Spotting!
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`MapResults Matches Snapshot 1`] = `
+Array [
+  <View>
+    <Text
+      style={
+        Object {
+          "color": "gray",
+          "fontSize": 20,
+        }
+      }
+    >
+      <Text>
+        1
+         
+      </Text>
+      <Text />
+       27 / Jan / 2020  at  15:03:08
+    </Text>
+  </View>,
+  <View>
+    <Text
+      style={
+        Object {
+          "color": "gray",
+          "fontSize": 20,
+        }
+      }
+    >
+      <Text>
+        2
+         
+      </Text>
+      <Text />
+       27 / Jan / 2020  at  15:13:02
+    </Text>
+  </View>,
+  <View>
+    <Text
+      style={
+        Object {
+          "color": "gray",
+          "fontSize": 20,
+        }
+      }
+    >
+      <Text>
+        3
+         
+      </Text>
+      <Text />
+       27 / Jan / 2020  at  15:08:57
+    </Text>
+  </View>,
+]
+`;
+
+exports[`Overlay Matches Snapshot 1`] = `
+<View
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(1, 1, 1, 0.95)",
+        "display": "flex",
+        "height": 1334,
+        "paddingTop": 120,
+        "position": "absolute",
+        "top": 0,
+        "width": 750,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "lightgray",
+          "fontSize": 30,
+          "marginBottom": 20,
+        }
+      }
+    >
+      Space Station Spotter
+    </Text>
+    <Text />
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "rgba(255, 255, 255, 0.9)",
+            "borderRadius": 10,
+            "color": "gray",
+            "margin": 20,
+            "opacity": 1,
+            "paddingBottom": 15,
+            "paddingLeft": 60,
+            "paddingRight": 60,
+            "paddingTop": 15,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "gray",
+              "fontSize": 17,
+              "padding": 10,
+            }
+          }
+        >
+          Start Spotting!
+        </Text>
+      </View>
+    </View>
+    <View />
+    <View
+      style={
+        Object {
+          "display": "none",
+        }
+      }
+    >
+      <ActivityIndicator
+        animating={true}
+        color="white"
+        hidesWhenStopped={true}
+        size="large"
+        style={
+          Object {
+            "padding": 20,
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
