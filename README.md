@@ -1,7 +1,7 @@
 # main
 # Welcome to my GitHub repo!
 
-All project source code is in he src folder. 
+All project source code is in the src folder. 
 
 To install and serve an app locally: 
 
