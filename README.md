@@ -10,7 +10,7 @@ Alternatively, all published projects have their own repo's.
 * https://github.com/thisprojects/quote-generator
 * https://github.com/thisprojects/got-house-picker
 
-The Apps themselves are available to test here -> https://www.nathandownes.co.uk
+The apps themselves are available to test here -> https://www.nathandownes.co.uk
 
 To install and serve an app locally: 
 
