@@ -6,6 +6,7 @@ All of my projects are published on https://www.nathandownes.co.uk
 
 These are the latest projects I have published. 
 
+* https://github.com/thisprojects/fair-days  
 * https://github.com/thisprojects/crime-stats  
 * https://github.com/thisprojects/space-station-spotter
 * https://github.com/thisprojects/SpaceStationSpotterNative
