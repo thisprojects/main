@@ -2,6 +2,7 @@
 
 You can find my project repos here :
 
+* https://github.com/thisprojects/webprofile  
 * https://github.com/thisprojects/fair-days  
 * https://github.com/thisprojects/crime-stats  
 * https://github.com/thisprojects/space-station-spotter
