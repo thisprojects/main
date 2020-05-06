@@ -2,6 +2,7 @@
 
 You can find my project repos here :
 
+* https://github.com/thisprojects/corona-stats-uk
 * https://github.com/thisprojects/js-trainer
 * https://github.com/thisprojects/webprofile  
 * https://github.com/thisprojects/fair-days  
