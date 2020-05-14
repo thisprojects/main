@@ -14,7 +14,7 @@ setup(
     description="Play a cool dude text based rpg",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/realpython/reader",
+    url="https://github.com/thisprojects/main/tree/master/python/text_based_RPG",
     author="Natebert",
     author_email="natebert@notarealemail.com",
     license="MIT",
